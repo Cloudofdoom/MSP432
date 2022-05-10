@@ -49,6 +49,7 @@ void buttons(void){
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
         UART_transmitData(EUSCI_A0_BASE, 0x72);
         LED1();
+        //LED2();
         __delay_cycles(600000);
     }
     else if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
@@ -73,7 +74,7 @@ void Declare(void){
     GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
     GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 }
-
+void LED2(void);
 void LED1(void);
 
 void main(void)
@@ -96,18 +97,44 @@ void main(void)
 
 }
 
-void LED1(void){
+void LED2(void){
     while(1){
+        //UART();
         GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN0);
         __delay_cycles(600000);
-        if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
-            GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        if(UART_receiveData(EUSCI_A0_BASE) == 0x47){
             break;
         }
         GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
         __delay_cycles(600000);
-        if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
+        if(UART_receiveData(EUSCI_A0_BASE) == 0x47){
             break;
         }
     }
 }
+
+void LED1(void){
+    __delay_cycles(600000);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0);
+    while(1){
+        GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        //__delay_cycles(600000);
+        if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
+            //GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+            GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+            GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+            //__delay_cycles(600000);
+            break;
+        }
+        __delay_cycles(600000);
+        GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        //__delay_cycles(600000);
+        if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
+            GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+            //__delay_cycles(600000);
+            break;
+        }
+        __delay_cycles(600000);
+    }
+}
+
