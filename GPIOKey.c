@@ -97,7 +97,7 @@ void main(void)
 }
 
 void LED1(void){
-    while(GPIO_getInputPinValue(GPIO_PORT_P2, GPIO_PIN0)){
+    while(1){
         GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN0);
         __delay_cycles(600000);
         if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == 0){
