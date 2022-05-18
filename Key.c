@@ -165,10 +165,12 @@ void TA0_N_IRQHandler(void){
     MAP_Timer_A_clearInterruptFlag(TIMER_A0_BASE);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN0);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P5,GPIO_PIN6);
-    MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN6);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN6);
+    //MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN6);
 }
 void TA2_N_IRQHandler(void){
     MAP_Timer_A_clearInterruptFlag(TIMER_A2_BASE);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P5,GPIO_PIN6);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN7);
 }
+
