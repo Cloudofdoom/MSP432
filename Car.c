@@ -190,3 +190,4 @@ void TA2_N_IRQHandler(void){
     //GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
     //MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN7);
 }
+
