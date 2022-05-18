@@ -51,6 +51,7 @@ void buttons(void){
         //AlarmEnable();
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
         AlarmTriggered();
+        GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);
 
     }
      else if(/*(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN1) == 0) &&*/ (GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN6) == 0)){
@@ -60,6 +61,7 @@ void buttons(void){
          GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN1);
          GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
          GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+         GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);
          //__delay_cycles(600000);
          //condition();
                 //turn on green
@@ -96,7 +98,13 @@ void Declare(void){
 
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, PIN_ALL16);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
+
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN4);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);
+
     GPIO_setAsInputPin(GPIO_PORT_P1, GPIO_PIN6);
+    //GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4);
+
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1);
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN4);
 }
