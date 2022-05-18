@@ -70,6 +70,17 @@ void buttons(void){
         GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
         GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN6);
     }
+    else if(GPIO_getInputPinValue(GPIO_PORT_P2, GPIO_PIN4) == 1){
+            Interrupt_disableInterrupt(INT_TA0_N);
+            //Interrupt_disableInterrupt(INT_TA2_N);
+            GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+            //GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN1);       //turn on green
+            //UART_transmitData(EUSCI_A0_BASE, 0x47);
+            //__delay_cycles(600000);
+            GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN1);
+            GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
+            //GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN6);
+    }
     else{
         GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0);
         GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN1);
@@ -85,8 +96,10 @@ void Declare(void){
     //GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN7);
     //GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN7);
 
-    //GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN6);
-    //GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
+    //GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN4);
+    //GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);
+
+    GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4);
 
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, PIN_ALL16);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN1);
@@ -173,4 +186,5 @@ void TA2_N_IRQHandler(void){
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P5,GPIO_PIN6);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN7);
 }
+
 
