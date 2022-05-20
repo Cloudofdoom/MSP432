@@ -29,69 +29,30 @@ const Timer_A_UpModeConfig upModeConfigP11 = {
     //Clear
     TIMER_A_DO_CLEAR
 };
-void condition(void){
-    if (UART_receiveData(EUSCI_A0_BASE) == 0x47){
-        //Interrupt_disableInterrupt(INT_TA0_N);
-        AlarmEnable();
-    }
-    else if (UART_receiveData(EUSCI_A0_BASE) == 0x72){
-        GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0);
-        //Interrupt_disableInterrupt(INT_TA0_N);
-        AlarmTriggered();
-    }
-}
 
 void buttons(void){
      if((GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN1) == 0) && (GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN6) == 1)){
-        //GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
-        //UART_transmitData(EUSCI_A0_BASE, 0x72);
-        //__delay_cycles(600000);
-        //condition();
-        //GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN7);
-        //AlarmEnable();
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
         AlarmTriggered();
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);
 
     }
-     else if(/*(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN1) == 0) &&*/ (GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN6) == 0)){
+     else if((GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN6) == 0)){
          Interrupt_disableInterrupt(INT_TA2_N);
-         //UART_transmitData(EUSCI_A0_BASE, 0x47);
-         //AlarmTriggered();
          GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN1);
          GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
          GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
          GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);
-         //__delay_cycles(600000);
-         //condition();
-                //turn on green
-    }/*
-    else if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN6) == 0){
-        //Interrupt_disableInterrupt(INT_TA0_N);
-        Interrupt_disableInterrupt(INT_TA2_N);
-        GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0);
-        GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN1);       //turn on green
-        //UART_transmitData(EUSCI_A0_BASE, 0x47);
-        //__delay_cycles(600000);
-        GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN6);
-        //GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
-        //GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN6);
-    }*/
+    }
     else{
         GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0);
         GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN1);
-        //GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
-
     }
 }
 
 void Declare(void){
     //Set up
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0);
-
-    //GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN7);
-    //GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
-    //GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 
     GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN6);
     GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
@@ -103,7 +64,6 @@ void Declare(void){
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);
 
     GPIO_setAsInputPin(GPIO_PORT_P1, GPIO_PIN6);
-    //GPIO_setAsInputPin(GPIO_PORT_P2, GPIO_PIN4);
 
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1);
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN4);
@@ -122,15 +82,11 @@ void main(void)
     Declare();
 
     while(1){
-
         buttons();
-        //condition();
     }
-
 }
 
 void AlarmEnable(void){
-        //Interrupt_disableInterrupt(INT_TA0_N);
         //Setup LED
         GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
         GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
@@ -154,11 +110,7 @@ void AlarmEnable(void){
 }
 
 void AlarmTriggered(void){
-        //Interrupt_disableInterrupt(INT_TA0_N);
         //Setup LED
-        //GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN6);
-        //GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);
-
         GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
         GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 
@@ -173,21 +125,16 @@ void AlarmTriggered(void){
         Interrupt_enableMaster();
         //Start TimerA0
         Timer_A_startCounter(TIMER_A2_BASE, TIMER_A_UP_MODE);
-        //GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN7);
 }
 
 void TA0_N_IRQHandler(void){
     MAP_Timer_A_clearInterruptFlag(TIMER_A0_BASE);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN0);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P5,GPIO_PIN6);
-    //MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN6);
     GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN6);
 }
 void TA2_N_IRQHandler(void){
     MAP_Timer_A_clearInterruptFlag(TIMER_A2_BASE);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P5,GPIO_PIN6);
     MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN0);
-    //GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN0);       //turn on red
-    //MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1,GPIO_PIN7);
 }
-
